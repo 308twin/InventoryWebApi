@@ -6,7 +6,7 @@ namespace InventoryApi.Entities
 {
     public class OutboundProduct
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        
         public Guid Id { get; set; }
         public Guid StorageListId { get; set; }     //外键
 
@@ -14,6 +14,6 @@ namespace InventoryApi.Entities
         public string ProductSpecification { get; set; }
         public int Amout { get; set; }
 
-        public OutboundList OutboundList { get; set; }    //导航属性
+        //public OutboundList OutboundList { get; set; }    //导航属性
     }
 }

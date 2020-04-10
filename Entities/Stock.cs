@@ -6,7 +6,7 @@ namespace InventoryApi.Entities
 {
     public class Stock
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        
         public Guid Id { get; set; }
         public string ProductName { get; set; }
         public string ProductSpecification { get; set; }

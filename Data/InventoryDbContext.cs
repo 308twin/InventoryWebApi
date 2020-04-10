@@ -42,11 +42,11 @@ namespace InventoryApi.Data
             modelBuilder.Entity<StorageProduct>()
                .Property(x => x.Amout).IsRequired().HasMaxLength(50);
 
-            modelBuilder.Entity<StorageProduct>()
-                .HasOne(x => x.StorageList)
-                .WithMany(x => x.StorageProducts)
-                .HasForeignKey(x => x.StorageListId)
-                .OnDelete(DeleteBehavior.Cascade);
+           // modelBuilder.Entity<StorageProduct>()
+           //     .HasOne(x => x.StorageList)
+           //     .WithMany(x => x.StorageProducts)
+           //     .HasForeignKey(x => x.StorageListId)
+           //     .OnDelete(DeleteBehavior.Cascade);
 
             //配置OutboundList
             modelBuilder.Entity<OutboundList>()
@@ -69,11 +69,11 @@ namespace InventoryApi.Data
             modelBuilder.Entity<OutboundProduct>()
                .Property(x => x.Amout).IsRequired().HasMaxLength(50);
 
-            modelBuilder.Entity<OutboundProduct>()
-                .HasOne(x => x.OutboundList)
-                .WithMany(x => x.OutboundProducts)
-                .HasForeignKey(x => x.StorageListId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<OutboundProduct>()
+            //    .HasOne(x => x.OutboundList)
+            //    .WithMany(x => x.OutboundProducts)
+            //    .HasForeignKey(x => x.StorageListId)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
             //配置Stock
             modelBuilder.Entity<Stock>()

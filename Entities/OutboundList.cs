@@ -7,7 +7,7 @@ namespace InventoryApi.Entities
 {
     public class OutboundList
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         public string OutboundNumber  { get; set; }
         public DateTime OutboundDate { get; set; }        

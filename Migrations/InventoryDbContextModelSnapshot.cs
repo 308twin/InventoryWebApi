@@ -60,6 +60,9 @@ namespace InventoryApi.Migrations
                         .HasColumnType("INTEGER")
                         .HasMaxLength(50);
 
+                    b.Property<Guid?>("OutboundListId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -75,7 +78,7 @@ namespace InventoryApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StorageListId");
+                    b.HasIndex("OutboundListId");
 
                     b.ToTable("outboundProducts");
 
@@ -258,16 +261,14 @@ namespace InventoryApi.Migrations
 
             modelBuilder.Entity("InventoryApi.Entities.OutboundProduct", b =>
                 {
-                    b.HasOne("InventoryApi.Entities.OutboundList", "OutboundList")
+                    b.HasOne("InventoryApi.Entities.OutboundList", null)
                         .WithMany("OutboundProducts")
-                        .HasForeignKey("StorageListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OutboundListId");
                 });
 
             modelBuilder.Entity("InventoryApi.Entities.StorageProduct", b =>
                 {
-                    b.HasOne("InventoryApi.Entities.StorageList", "StorageList")
+                    b.HasOne("InventoryApi.Entities.StorageList", null)
                         .WithMany("StorageProducts")
                         .HasForeignKey("StorageListId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace InventoryApi.Migrations
 {
-    public partial class initial : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -57,17 +57,18 @@ namespace InventoryApi.Migrations
                     StorageListId = table.Column<Guid>(nullable: false),
                     ProductName = table.Column<string>(maxLength: 100, nullable: false),
                     ProductSpecification = table.Column<string>(maxLength: 50, nullable: false),
-                    Amout = table.Column<int>(maxLength: 50, nullable: false)
+                    Amout = table.Column<int>(maxLength: 50, nullable: false),
+                    OutboundListId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_outboundProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_outboundProducts_OutboundLists_StorageListId",
-                        column: x => x.StorageListId,
+                        name: "FK_outboundProducts_OutboundLists_OutboundListId",
+                        column: x => x.OutboundListId,
                         principalTable: "OutboundLists",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -132,6 +133,11 @@ namespace InventoryApi.Migrations
                 values: new object[] { new Guid("bbdee09c-089b-4d30-bece-44df5923716e"), "低压加热器管：钢管成集束分布，用蒸汽加热水", new DateTime(2020, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "20200406001" });
 
             migrationBuilder.InsertData(
+                table: "outboundProducts",
+                columns: new[] { "Id", "Amout", "OutboundListId", "ProductName", "ProductSpecification", "StorageListId" },
+                values: new object[] { new Guid("6fb600c1-9011-4fd7-9234-881379718432"), 1, null, "电站锅炉", "混合锅炉", new Guid("72457e73-ea34-4e02-b575-8d384e82a481") });
+
+            migrationBuilder.InsertData(
                 table: "StorageProducts",
                 columns: new[] { "Id", "Amout", "ProductName", "ProductSpecification", "StorageListId" },
                 values: new object[] { new Guid("6fb600c1-9011-4fd7-9234-881379716447"), 3, "电站锅炉", "混合锅炉", new Guid("bbdee09c-089b-4d30-bece-44df5923716c") });
@@ -151,15 +157,10 @@ namespace InventoryApi.Migrations
                 columns: new[] { "Id", "Amout", "ProductName", "ProductSpecification", "StorageListId" },
                 values: new object[] { new Guid("6fb600c1-9011-4fd7-9234-881379716444"), 3, "电站锅炉", "水管锅炉", new Guid("bbdee09c-089b-4d30-bece-44df5923716e") });
 
-            migrationBuilder.InsertData(
-                table: "outboundProducts",
-                columns: new[] { "Id", "Amout", "ProductName", "ProductSpecification", "StorageListId" },
-                values: new object[] { new Guid("6fb600c1-9011-4fd7-9234-881379718432"), 1, "电站锅炉", "混合锅炉", new Guid("72457e73-ea34-4e02-b575-8d384e82a481") });
-
             migrationBuilder.CreateIndex(
-                name: "IX_outboundProducts_StorageListId",
+                name: "IX_outboundProducts_OutboundListId",
                 table: "outboundProducts",
-                column: "StorageListId");
+                column: "OutboundListId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StorageProducts_StorageListId",

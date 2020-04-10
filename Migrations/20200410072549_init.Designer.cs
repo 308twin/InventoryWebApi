@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryApi.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    [Migration("20200407053641_initial")]
-    partial class initial
+    [Migration("20200410072549_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -62,6 +62,9 @@ namespace InventoryApi.Migrations
                         .HasColumnType("INTEGER")
                         .HasMaxLength(50);
 
+                    b.Property<Guid?>("OutboundListId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -77,7 +80,7 @@ namespace InventoryApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StorageListId");
+                    b.HasIndex("OutboundListId");
 
                     b.ToTable("outboundProducts");
 
@@ -260,16 +263,14 @@ namespace InventoryApi.Migrations
 
             modelBuilder.Entity("InventoryApi.Entities.OutboundProduct", b =>
                 {
-                    b.HasOne("InventoryApi.Entities.OutboundList", "OutboundList")
+                    b.HasOne("InventoryApi.Entities.OutboundList", null)
                         .WithMany("OutboundProducts")
-                        .HasForeignKey("StorageListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OutboundListId");
                 });
 
             modelBuilder.Entity("InventoryApi.Entities.StorageProduct", b =>
                 {
-                    b.HasOne("InventoryApi.Entities.StorageList", "StorageList")
+                    b.HasOne("InventoryApi.Entities.StorageList", null)
                         .WithMany("StorageProducts")
                         .HasForeignKey("StorageListId")
                         .OnDelete(DeleteBehavior.Cascade)

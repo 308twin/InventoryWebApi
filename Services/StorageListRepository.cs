@@ -5,23 +5,28 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using InventoryApi.Entities;
 using InventoryApi.Data;
-
+using System.Linq.Dynamic.Core;
+using AutoMapper;
+using InventoryApi.Models;
 namespace InventoryApi.Services
 {
     public class StorageListRepository:IStorageListRepository
     {
+        //由于StorageProduct是依附于StorageList而存在的，所以实现上不把二者的Repository分开
         private readonly InventoryDbContext _context;
+        private readonly IMapper _mapper;
 
-        public StorageListRepository(InventoryDbContext context)
+        public StorageListRepository(InventoryDbContext context, IMapper mapper)
         {
             _context = context ?? throw new AccessViolationException(nameof(context));
+            _mapper = mapper ?? throw new AccessViolationException(nameof(context));
         }
 
         public async Task<IEnumerable<StorageList>> GetStorageListsAsync()
         {
             return await _context.StorageLists.ToListAsync();
         }
-        public async Task<IEnumerable<StorageList>> GetStorageListAsync(IEnumerable<Guid> storageListIds)
+        public async Task<IEnumerable<StorageList>> GetStorageListsAsync(IEnumerable<Guid> storageListIds)
         {
             if (storageListIds == null)
             {
@@ -39,11 +44,33 @@ namespace InventoryApi.Services
             {
                 throw new ArgumentNullException(nameof(storageListId));
             }
+            var storageList = _context.StorageLists
+               .FirstOrDefaultAsync(x => x.Id == storageListId);
+            var storageProduct = _context.StorageProducts.Where(x => x.StorageListId == storageListId);
+            storageList.Result.StorageProducts = storageProduct.ToList();
+            StorageList s1 = storageList.Result;
 
-            return await _context.StorageLists
-                .FirstOrDefaultAsync(x=>x.Id==storageListId);
+            return s1;
+            
         }
+        //按理说应该用该方法，但是该方法映射问题无法解决，使用上面的方法
+        //public async Task<StorageListWithProductDto> GetStorageListWithProductAsync(Guid storageListId)
+        //{
+        //    if (storageListId == Guid.Empty)
+        //    {
+        //        throw new ArgumentNullException(nameof(storageListId));
+        //    }
+        //    var storageList = _context.StorageLists
+        //       .FirstOrDefaultAsync(x => x.Id == storageListId);
+        //    var storageProducts = _context.StorageProducts.Where(x => x.StorageListId == storageListId);
 
+        //    var storageListWithProductDto = _mapper.Map<StorageListWithProductDto>(storageList);
+        //    var storageProductDtos = _mapper.Map<ICollection<StorageProductDto>>(storageProducts);
+        //    storageListWithProductDto.StorageProductDtos = storageProductDtos;
+        //    return  storageListWithProductDto;
+
+        //    return await _context.StorageLists.FirstOrDefaultAsync(x => x.Id == storageListId);
+        //}
         public void AddStorageList(StorageList storageList)
         {
             if(storageList == null)
@@ -52,6 +79,13 @@ namespace InventoryApi.Services
              }
 
             storageList.Id = Guid.NewGuid();
+            if(storageList.StorageProducts !=null)  //这里在添加入库单的时候一并添加入库产品
+            {
+                foreach(var storageProduct in storageList.StorageProducts)
+                {
+                    storageProduct.Id = Guid.NewGuid();
+                }
+            }
             _context.StorageLists.Add(storageList);
         }
 
@@ -71,6 +105,11 @@ namespace InventoryApi.Services
         public async Task<bool> SaveAsync()
         {
             return await _context.SaveChangesAsync() >= 0;
+        }
+
+        public  bool Save()
+        {
+            return _context.SaveChanges() >= 0;
         }
     }
 }

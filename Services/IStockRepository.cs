@@ -5,7 +5,7 @@ using InventoryApi.Entities;
 
 namespace InventoryApi.Services
 {
-    interface IStockRepository
+    public interface IStockRepository
     {
         //Task<IEnumerable<Stock>> GetStockAsync(IEnumerable<Guid> stockID);
         Task<Stock> GetStockAsync(Guid stockId);

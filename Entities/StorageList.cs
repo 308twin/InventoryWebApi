@@ -8,7 +8,7 @@ namespace InventoryApi.Entities
 {
     public class StorageList
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        
         public Guid Id { get; set; }
         public string StorageNumber { get; set; }
         public DateTime StorageDate { get; set; }    
