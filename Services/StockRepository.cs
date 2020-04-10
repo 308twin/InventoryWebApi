@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using InventoryApi.Entities;
 using InventoryApi.Data;
-
+using InventoryApi.Models;
 namespace InventoryApi.Services
 {
     public class StockRepository:IStockRepository
@@ -27,17 +27,34 @@ namespace InventoryApi.Services
                 .FirstOrDefaultAsync(x => x.Id == stockId);
         }
 
-        public void AddStock(Stock stock)
+        public void StockIn(StorageProductAddOrUpdateDto storageProductAddOrUpdateDto)
         {
-            if (stock == null)
+            if (storageProductAddOrUpdateDto == null)
             {
-                throw new ArgumentNullException(nameof(stock));
+                throw new ArgumentNullException(nameof(storageProductAddOrUpdateDto));
             }
+            if(StorageProductExistsAsync(storageProductAddOrUpdateDto).Result)  //如果存在名称和规格都一样的产品
+            {
+                var stock =  _context.Stocks.FirstOrDefault(x =>
+                x.ProductName == storageProductAddOrUpdateDto.ProductName &&
+                x.ProductSpecification == storageProductAddOrUpdateDto.ProductSpecification);
 
-            stock.Id = Guid.NewGuid();
-            _context.Stocks.Add(stock);
+                stock.Amout += storageProductAddOrUpdateDto.Amout;
+                return;
+            }
+            Stock newStock = new Stock();
+            newStock.Id = Guid.NewGuid();
+            newStock.ProductName = storageProductAddOrUpdateDto.ProductName;
+            newStock.ProductSpecification = storageProductAddOrUpdateDto.ProductSpecification;
+            newStock.Amout = storageProductAddOrUpdateDto.Amout;
+            _context.Stocks.Add(newStock);
+           
         }
-
+        public async Task<bool> StorageProductExistsAsync(StorageProductAddOrUpdateDto product)
+        {
+            return await _context.Stocks.AnyAsync(x =>
+            x.ProductName == product.ProductName && x.ProductSpecification == product.ProductSpecification);
+        }
         public void UpdateStock(Stock stock)
         {
 

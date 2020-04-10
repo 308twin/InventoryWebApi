@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace InventoryApi.Models
 {
-    public class StockAddOrUpdateDto
+    //Stock输出、添加用DTO
+    public class StockAddOrUpdateDto:StockDto
     {
     }
 }

@@ -7,7 +7,9 @@ using InventoryApi.Entities;
 using InventoryApi.Data;
 using System.Linq.Dynamic.Core;
 using AutoMapper;
+using InventoryApi.Helpers;
 using InventoryApi.Models;
+using InventoryApi.DtoParameters;
 namespace InventoryApi.Services
 {
     public class StorageListRepository:IStorageListRepository
@@ -71,6 +73,26 @@ namespace InventoryApi.Services
 
         //    return await _context.StorageLists.FirstOrDefaultAsync(x => x.Id == storageListId);
         //}
+        public async Task<PagedList<StorageList>> GetPagedStorageListsAsync(StorageListDtoParameters parameters)
+        {
+            if(parameters == null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
+            var querryExpression = _context.StorageLists as IQueryable<StorageList>;
+            if(!String.IsNullOrWhiteSpace(parameters.StorageListNum))
+            {
+                parameters.StorageListNum = parameters.StorageListNum.Trim();
+                querryExpression = querryExpression.Where(x => x.StorageNumber == parameters.StorageListNum);
+            }
+            if(!String.IsNullOrWhiteSpace(parameters.SearchTerm))
+            {
+                parameters.SearchTerm = parameters.SearchTerm.Trim();
+                querryExpression = querryExpression.Where(x =>
+                x.StorageNumber.Contains(parameters.SearchTerm));
+            }
+            return await PagedList<StorageList>.CreateAsync(querryExpression, parameters.PageNumber, parameters.PageSize);
+        }
         public void AddStorageList(StorageList storageList)
         {
             if(storageList == null)
@@ -111,5 +133,6 @@ namespace InventoryApi.Services
         {
             return _context.SaveChanges() >= 0;
         }
+
     }
 }

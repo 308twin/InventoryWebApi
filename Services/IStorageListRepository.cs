@@ -12,6 +12,7 @@ namespace InventoryApi.Services
     {
         Task<StorageList> GetStorageListAsync(Guid storageListId);
         //Task<StorageListWithProductDto> GetStorageListWithProductAsync(Guid storageListId);
+        Task<PagedList<StorageList>> GetPagedStorageListsAsync(StorageListDtoParameters parameters);
         Task<IEnumerable<StorageList>> GetStorageListsAsync();
         Task<IEnumerable<StorageList>> GetStorageListsAsync(IEnumerable<Guid> storageListIds);
         //Task<PagedList<StorageList>> GetStorageListsAsync(StorageListDtoParameters parameters);
