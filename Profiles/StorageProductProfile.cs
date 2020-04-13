@@ -10,6 +10,8 @@ namespace InventoryApi.Profiles
         {
             CreateMap<StorageProduct, StorageProductDto>();
             CreateMap<StorageProductAddOrUpdateDto, StorageProduct>();
+            CreateMap<StorageProductAddOrUpdateDto, OutboundProductAddOrUpdateDto>();
+            CreateMap<OutboundProductAddOrUpdateDto, StorageProductAddOrUpdateDto>();
         }
     }
 }

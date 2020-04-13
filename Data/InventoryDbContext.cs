@@ -14,7 +14,7 @@ namespace InventoryApi.Data
         public DbSet<StorageList> StorageLists { get; set; }
         public DbSet<StorageProduct> StorageProducts { get; set; }
         public DbSet<OutboundList> OutboundLists { get; set; }       
-        public DbSet<OutboundProduct> outboundProducts { get; set; }
+        public DbSet<OutboundProduct> OutboundProducts { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         //配置模型
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -157,7 +157,7 @@ namespace InventoryApi.Data
                 new OutboundProduct
                 {
                     Id = Guid.Parse("6fb600c1-9011-4fd7-9234-881379718432"),
-                    StorageListId = Guid.Parse("72457e73-ea34-4e02-b575-8d384e82a481"),
+                    OutboundListId = Guid.Parse("72457e73-ea34-4e02-b575-8d384e82a481"),
                     ProductName = "电站锅炉",
                     ProductSpecification = "混合锅炉",
                     Amout = 1,
@@ -170,28 +170,28 @@ namespace InventoryApi.Data
                     Id = Guid.Parse("bbdee09c-089b-4d30-bece-44df59237111"),
                     ProductName = "电站锅炉",
                     ProductSpecification = "水管锅炉",
-                    Amout = 2
+                    Amout = 5
                 },
                 new Stock
                 {
                     Id = Guid.Parse("5efc910b-2f45-43df-afae-620d40542800"),
                     ProductName = "电站锅炉",
                     ProductSpecification = "混合锅炉",
-                    Amout = 2,
+                    Amout = 5,
                 },
                 new Stock
                 {
                     Id = Guid.Parse("5efc910b-2f45-43df-afae-620d40542801"),
                     ProductName = "变压器",
-                    ProductSpecification = "110KV",
-                    Amout = 2,
+                    ProductSpecification = "220KV",
+                    Amout = 5,
                 },
                 new Stock
                 {
                     Id = Guid.Parse("5efc910b-2f45-43df-afae-620d40542802"),
                     ProductName = "变压器",
                     ProductSpecification = "110KV",
-                    Amout = 2,
+                    Amout = 5,
                 });
 
         }

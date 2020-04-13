@@ -15,9 +15,10 @@ namespace InventoryApi.Helpers
         public int PageSize { get; private set; }
         public int TotalCount { get; private set; }     //所有记录总数
         public bool HasPrevious => CurrentPage > 1;
+        public bool HasNext => CurrentPage < TotalPages;
         public PagedList(List<T> items, int count, int pageNumber, int pageSize)
         {
-            TotalPages = count;
+            TotalCount = count;
             PageSize = pageSize;
             CurrentPage = pageNumber;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);

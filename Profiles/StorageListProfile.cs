@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using InventoryApi.Entities;
 using InventoryApi.Models;
-using System;
-using System.Collections.Generic;
 
 namespace InventoryApi.Profiles
 {
@@ -20,6 +18,9 @@ namespace InventoryApi.Profiles
             //CreateMap<StorageList, StorageListWithProductDto>();
             CreateMap<StorageProduct, StorageProductDto>();
             CreateMap<StorageProduct, StorageProductAddOrUpdateDto>();
+            CreateMap<StorageProductAddOrUpdateDto, OutboundProductAddOrUpdateDto>();
+            CreateMap<OutboundProductAddOrUpdateDto, StorageProductAddOrUpdateDto>();
+
         }
     }
 }

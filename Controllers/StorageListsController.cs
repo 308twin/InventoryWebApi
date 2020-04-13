@@ -34,12 +34,12 @@ namespace InventoryApi.Controllers
                 throw new ArgumentNullException(nameof(storageListRepository));
         }
         //返回StorageLists
-        [HttpGet(Name = nameof(GetStorageLists))]
-        public async Task<ActionResult<IEnumerable<StorageList>>> GetStorageLists()
-        {
-            var storageLists = await _storageListRepository.GetStorageListsAsync();
-            return Ok(storageLists);
-        }
+        //[HttpGet(Name = nameof(GetStorageLists))]
+        //public async Task<ActionResult<IEnumerable<StorageList>>> GetStorageLists()
+        //{
+        //    var storageLists = await _storageListRepository.GetStorageListsAsync();
+        //    return Ok(storageLists);
+        //}
         //返回单个StorageList的详细信息，包含StorageProducts
         [HttpGet("{storageListId}", Name = nameof(GetStorageList))]    //P6        
         public async Task<ActionResult<StorageList>> GetStorageList(Guid storageListId)
@@ -62,7 +62,7 @@ namespace InventoryApi.Controllers
                                 ? CreateStorageListResourceUri(parameters, ResourceUnType.PreviousPage)
                                 : null;
 
-            var nextPageLink = storageLists.HasPrevious
+            var nextPageLink = storageLists.HasNext
                                 ? CreateStorageListResourceUri(parameters, ResourceUnType.NextPage)
                                 : null;
 
@@ -90,6 +90,7 @@ namespace InventoryApi.Controllers
             var entity = _mapper.Map<StorageList>(storageList);           
             _storageListRepository.AddStorageList(entity);
 
+            //入库时同时对库存进行操作
             foreach(var storageProductAddOrUpdateDto in storageList.StorageProducts)
             {
                 _stockRepository.StockIn(storageProductAddOrUpdateDto);
@@ -99,7 +100,26 @@ namespace InventoryApi.Controllers
             var returnDto = _mapper.Map<StorageListDto>(entity);
             return CreatedAtRoute(nameof(GetStorageList), new { storageListId = returnDto.Id }, returnDto);
         }
-       
+        //[HttpDelete("storageListId",Name = nameof(DeleteStorageList))]
+        //public async Task<IActionResult> DeleteStorageList(Guid storageListId)
+        //{
+        //    var entity = await _storageListRepository.GetStorageListAsync(storageListId);
+        //    if(entity == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _storageListRepository.DeleteStorageList(entity);
+        //    _storageListRepository.SaveAsync();
+        //    return NoContent();
+
+        //}
+
+        //[HttpOptions]
+        //public IActionResult GetStorageListOptions()
+        //{
+        //    Response.Headers.Add("Allow", "DELETE,GET,PATCH,PUT,OPTIONS");
+        //    return Ok();
+        //}
         //前后页码的uri也需要查询条件，因为是根据原本的查询条件做的分页
         private string CreateStorageListResourceUri(StorageListDtoParameters parameters,
                                                     ResourceUnType type)
@@ -139,7 +159,7 @@ namespace InventoryApi.Controllers
                             searchTerm = parameters.SearchTerm
                         });
             }
-        }     
-
+        }
+       
     }
 }

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using InventoryApi.Entities;
 using InventoryApi.Helpers;
-using InventoryApi.Services;
-using InventoryApi.Models;
 using InventoryApi.DtoParameters;
 namespace InventoryApi.Services
 {

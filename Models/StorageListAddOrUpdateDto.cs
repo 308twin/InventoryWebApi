@@ -7,7 +7,7 @@ namespace InventoryApi.Models
     public class StorageListAddOrUpdateDto
     {
         //StorageList存储用DTO
-        [Display(Name = "公司名")]
+        [Display(Name = "入库单号")]
         [Required(ErrorMessage = "{0}这个字段是必填的")]
         [MaxLength(50, ErrorMessage = "{0}的最大长度不可以超过{1}")]
         public string StorageNumber { get; set; }

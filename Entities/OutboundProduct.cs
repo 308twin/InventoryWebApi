@@ -8,7 +8,7 @@ namespace InventoryApi.Entities
     {
         
         public Guid Id { get; set; }
-        public Guid StorageListId { get; set; }     //外键
+        public Guid OutboundListId { get; set; }     //外键
 
         public string ProductName { get; set; }
         public string ProductSpecification { get; set; }

@@ -60,7 +60,7 @@ namespace InventoryApi.Migrations
                         .HasColumnType("INTEGER")
                         .HasMaxLength(50);
 
-                    b.Property<Guid?>("OutboundListId")
+                    b.Property<Guid>("OutboundListId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProductName")
@@ -73,23 +73,20 @@ namespace InventoryApi.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(50);
 
-                    b.Property<Guid>("StorageListId")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("OutboundListId");
 
-                    b.ToTable("outboundProducts");
+                    b.ToTable("OutboundProducts");
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("6fb600c1-9011-4fd7-9234-881379718432"),
                             Amout = 1,
+                            OutboundListId = new Guid("72457e73-ea34-4e02-b575-8d384e82a481"),
                             ProductName = "电站锅炉",
-                            ProductSpecification = "混合锅炉",
-                            StorageListId = new Guid("72457e73-ea34-4e02-b575-8d384e82a481")
+                            ProductSpecification = "混合锅炉"
                         });
                 });
 
@@ -121,28 +118,28 @@ namespace InventoryApi.Migrations
                         new
                         {
                             Id = new Guid("bbdee09c-089b-4d30-bece-44df59237111"),
-                            Amout = 2,
+                            Amout = 5,
                             ProductName = "电站锅炉",
                             ProductSpecification = "水管锅炉"
                         },
                         new
                         {
                             Id = new Guid("5efc910b-2f45-43df-afae-620d40542800"),
-                            Amout = 2,
+                            Amout = 5,
                             ProductName = "电站锅炉",
                             ProductSpecification = "混合锅炉"
                         },
                         new
                         {
                             Id = new Guid("5efc910b-2f45-43df-afae-620d40542801"),
-                            Amout = 2,
+                            Amout = 5,
                             ProductName = "变压器",
-                            ProductSpecification = "110KV"
+                            ProductSpecification = "220KV"
                         },
                         new
                         {
                             Id = new Guid("5efc910b-2f45-43df-afae-620d40542802"),
-                            Amout = 2,
+                            Amout = 5,
                             ProductName = "变压器",
                             ProductSpecification = "110KV"
                         });
@@ -263,7 +260,9 @@ namespace InventoryApi.Migrations
                 {
                     b.HasOne("InventoryApi.Entities.OutboundList", null)
                         .WithMany("OutboundProducts")
-                        .HasForeignKey("OutboundListId");
+                        .HasForeignKey("OutboundListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("InventoryApi.Entities.StorageProduct", b =>

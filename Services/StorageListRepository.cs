@@ -48,6 +48,10 @@ namespace InventoryApi.Services
             }
             var storageList = _context.StorageLists
                .FirstOrDefaultAsync(x => x.Id == storageListId);
+            if(storageList.Result == null)
+            {
+                return storageList.Result;
+            }
             var storageProduct = _context.StorageProducts.Where(x => x.StorageListId == storageListId);
             storageList.Result.StorageProducts = storageProduct.ToList();
             StorageList s1 = storageList.Result;
@@ -80,12 +84,14 @@ namespace InventoryApi.Services
                 throw new ArgumentNullException(nameof(parameters));
             }
             var querryExpression = _context.StorageLists as IQueryable<StorageList>;
-            if(!String.IsNullOrWhiteSpace(parameters.StorageListNum))
+            //StorageListDtoParameters中的StorageListNum查询参数
+            if (!String.IsNullOrWhiteSpace(parameters.StorageListNum))
             {
                 parameters.StorageListNum = parameters.StorageListNum.Trim();
                 querryExpression = querryExpression.Where(x => x.StorageNumber == parameters.StorageListNum);
             }
-            if(!String.IsNullOrWhiteSpace(parameters.SearchTerm))
+            //StorageListDtoParameters中的SearchTerm查询参数
+            if (!String.IsNullOrWhiteSpace(parameters.SearchTerm))
             {
                 parameters.SearchTerm = parameters.SearchTerm.Trim();
                 querryExpression = querryExpression.Where(x =>
@@ -120,6 +126,11 @@ namespace InventoryApi.Services
             if(storageList == null)
             {
                 throw new ArgumentNullException(nameof(storageList));
+            }
+
+            foreach(var storageProduct in storageList.StorageProducts)
+            {
+                _context.StorageProducts.Remove(storageProduct);
             }
             _context.StorageLists.Remove(storageList);
         }
