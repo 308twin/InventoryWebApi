@@ -71,7 +71,7 @@ namespace InventoryApi.Services
             if (!String.IsNullOrWhiteSpace(parameters.OutboundListNum))
             {
                 parameters.OutboundListNum = parameters.OutboundListNum.Trim();
-                querryExpression = querryExpression.Where(x => x.OutboundNumber == parameters.OutboundListNum);
+                querryExpression = querryExpression.Where(x => x.OutboundNumber.Contains(parameters.OutboundListNum));
             }
             //OutboundListDtoParameters中的SearchTerm查询参数
             if (!String.IsNullOrWhiteSpace(parameters.SearchTerm))

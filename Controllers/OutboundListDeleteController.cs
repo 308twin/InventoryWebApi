@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using InventoryApi.Services;
+using InventoryApi.Models;
+using InventoryApi.Helpers;
 using AutoMapper;
 
 namespace InventoryApi.Controllers
@@ -32,6 +34,11 @@ namespace InventoryApi.Controllers
             if (entity == null)
             {
                 return NotFound();
+            }
+            //删除出库单库存应该对应增加
+            foreach (var storageProduct in entity.OutboundProducts)
+            {
+                _stockRepository.StockIn(_mapper.Map<StorageProductAddOrUpdateDto>(storageProduct));
             }
             _outboundListRepository.DeleteOutboundList(entity);
             _outboundListRepository.SaveAsync();

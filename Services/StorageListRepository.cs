@@ -88,7 +88,7 @@ namespace InventoryApi.Services
             if (!String.IsNullOrWhiteSpace(parameters.StorageListNum))
             {
                 parameters.StorageListNum = parameters.StorageListNum.Trim();
-                querryExpression = querryExpression.Where(x => x.StorageNumber == parameters.StorageListNum);
+                querryExpression = querryExpression.Where(x => x.StorageNumber.Contains(parameters.StorageListNum));
             }
             //StorageListDtoParameters中的SearchTerm查询参数
             if (!String.IsNullOrWhiteSpace(parameters.SearchTerm))

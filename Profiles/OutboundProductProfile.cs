@@ -9,6 +9,7 @@ namespace InventoryApi.Profiles
         public OutboundProductProfile()
         {
             CreateMap<OutboundProduct, OutboundProductDto>();
+            CreateMap<OutboundProduct, StorageProductAddOrUpdateDto>();
             CreateMap<OutboundProductAddOrUpdateDto, OutboundProduct>();
             CreateMap<StorageProduct, OutboundProductAddOrUpdateDto>();
             CreateMap<StorageProductAddOrUpdateDto, OutboundProductAddOrUpdateDto>();

@@ -38,7 +38,7 @@ namespace InventoryApi.Controllers
             {
                 return NotFound();
             }
-            //删除入库单的时候，库存也需要变化
+            //删除入库单的时候，库存应对应减少
             foreach(var storageProduct in entity.StorageProducts)
             {
                 _stockRepository.StockOut(_mapper.Map<OutboundProductAddOrUpdateDto>(storageProduct));
